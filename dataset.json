@@ -1,0 +1,266 @@
+[
+  {
+    "id": 1,
+    "category": "refund_request",
+    "split": "train",
+    "incoming_email": {
+      "from": "Maria Chen <mchen88@gmail.com>",
+      "subject": "Return question about my hiking boots",
+      "body": "Hi there, I ordered the Summit Ridge Hiking Boots (order #NW-10432) about two weeks ago and they run about a half size too small. I've already returned them using the prepaid label from your website and the tracking shows they were delivered back to your warehouse three days ago. Just wanted to check on the status of my refund. Thanks, Maria"
+    },
+    "sent_reply": "Hi Maria,\n\nThanks for reaching out, and sorry the Summit Ridge Hiking Boots didn't work out size-wise! I checked order #NW-10432 and can confirm your return was received and processed at our warehouse this morning.\n\nYour refund of the full purchase price has been issued to the original payment method. You should see it reflected on your statement within 3-5 business days, depending on your bank.\n\nIf you'd like to try the boots again in a half size up, just let us know and we're happy to help you find the right fit.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 2,
+    "category": "refund_request",
+    "split": "train",
+    "incoming_email": {
+      "from": "David Okafor <d.okafor@hotmail.com>",
+      "subject": "Damaged tent on arrival - want refund not exchange",
+      "body": "Hello, I received the Alpine Vista 2-Person Tent (order #NW-20115) yesterday and one of the aluminum poles was bent and cracked right out of the box. I know your policy usually offers an exchange for damaged items, but I'd actually prefer a refund since I already bought a different tent locally for my trip this weekend. Can you process a refund instead? Attached are photos of the damage. Thanks, David"
+    },
+    "sent_reply": "Hi David,\n\nI'm sorry to hear the Alpine Vista 2-Person Tent arrived with a bent and cracked pole — that's not the experience we want you to have, especially with a trip coming up. Thank you for the photos, they're helpful for our quality team.\n\nSince the item arrived damaged, I've gone ahead and processed a full refund for order #NW-20115 to your original payment method rather than an exchange, per your request. You do not need to return the damaged tent — please just recycle or dispose of it.\n\nYou should see the refund reflected on your statement within 3-5 business days. I hope your trip this weekend goes great, and I'm sorry for the inconvenience.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 3,
+    "category": "refund_request",
+    "split": "train",
+    "incoming_email": {
+      "from": "Priya Subramaniam <priya.s.outdoors@gmail.com>",
+      "subject": "Late return - Cascade Rain Shell",
+      "body": "Hi, I know your return window is 30 days but I'm hoping you can make an exception. I bought the Cascade Rain Shell jacket (order #NW-30877) 34 days ago and only just realized the sizing is off when I tried to layer it over a fleece this week. I know I'm a few days late but I haven't worn it outside and all tags are still attached. Is there any flexibility here? Thanks, Priya"
+    },
+    "sent_reply": "Hi Priya,\n\nThanks for your honesty about the timing, and no worries — since the Cascade Rain Shell is unworn with tags still attached and we're only a few days past the 30-day window, I'm happy to make a one-time exception for order #NW-30877.\n\nI've emailed you a prepaid return label separately. Once we receive the jacket back at our warehouse, we'll issue a full refund to your original payment method within 3-5 business days of it arriving.\n\nJust a heads up for future orders: our standard return window is 30 days from delivery, so it's worth checking sizing early on if you're between sizes. Let us know if you'd like help picking a different size while you wait on the refund.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 4,
+    "category": "refund_request",
+    "split": "test",
+    "incoming_email": {
+      "from": "Ben Whitfield <benwhitfield_hiking@yahoo.com>",
+      "subject": "Refund for a gift - lost receipt",
+      "body": "Hello, my sister gave me the Drift 20 Sleeping Bag as a birthday gift and it's not really warm enough for the trips I do. It's still in the original packaging, never used. The problem is she doesn't have the receipt anymore and I don't know the order number. Is there any way to still get a refund or credit for this?"
+    },
+    "sent_reply": "Hi Ben,\n\nHappy belated birthday, and thanks for reaching out! Unopened gifts without a receipt can still usually be sorted out — if you can share your sister's name and the email address she used to order, or even just the approximate purchase date, I can look up the Drift 20 Sleeping Bag order on our end.\n\nSince the bag is unused and in its original packaging, once I locate the order I'll be able to process either a refund or store credit — whichever you'd prefer — as long as the purchase falls within our 30-day return window from the delivery date.\n\nJust reply with those details and I'll get this moving right away.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 5,
+    "category": "billing_dispute",
+    "split": "train",
+    "incoming_email": {
+      "from": "Laura Jimenez <laura.jimenez.travels@gmail.com>",
+      "subject": "Charged twice for the same backpack order",
+      "body": "Hi, I just noticed on my credit card statement that I was charged twice for order #NW-50123, the Trailhead 45L Backpack. Both charges are for $189.00 and posted on the same day. I only ordered one backpack and only received one confirmation email. Can you please look into this and refund the duplicate charge?"
+    },
+    "sent_reply": "Hi Laura,\n\nThanks for flagging this, and I'm sorry for the confusion. I looked into order #NW-50123 for the Trailhead 45L Backpack and can confirm you were indeed charged twice due to a processing error on our end — only one backpack was ordered and shipped.\n\nI've refunded the duplicate charge of $189.00 to your original payment method. It should appear on your statement within 3-5 business days. Your original order and charge are unaffected.\n\nSorry again for the extra charge showing up, and thanks for catching it quickly.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 6,
+    "category": "billing_dispute",
+    "split": "train",
+    "incoming_email": {
+      "from": "Tom Reilly <treilly90@outlook.com>",
+      "subject": "SAVE20 code didn't work at checkout",
+      "body": "Hey, I tried to use the SAVE20 promo code from your newsletter on my order but it looks like it never actually applied — I got charged full price. My order number is #NW-60456 and it was for a Northwind camp stove and a set of trekking poles. Can this be fixed?"
+    },
+    "sent_reply": "Hi Tom,\n\nThanks for letting us know, and sorry the SAVE20 code didn't come through at checkout. I checked order #NW-60456 for the camp stove and trekking poles and confirmed the discount wasn't applied, even though the code was valid at the time of purchase.\n\nI've manually applied the 20% discount and refunded the difference to your original payment method. You should see that credit within 3-5 business days.\n\nIf you run into a promo code not applying again in the future, feel free to send us a quick note before or after checkout and we'll always make it right.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 7,
+    "category": "billing_dispute",
+    "split": "train",
+    "incoming_email": {
+      "from": "Freya Lindqvist <freya.lindqvist@webmail.se>",
+      "subject": "Charged more than expected - order from Sweden",
+      "body": "Hello, I ordered from Sweden and the total shown at checkout was $142.50 USD, but the charge on my card converted to more than I expected once my bank's exchange rate and a foreign transaction fee were applied. Order number is #NW-70789. I understand exchange rates fluctuate, but I want to make sure I wasn't overcharged on your end before I dispute anything with my bank."
+    },
+    "sent_reply": "Hi Freya,\n\nThanks for checking with us before going to your bank — that's exactly the right instinct. I looked into order #NW-70789 and confirmed we charged exactly $142.50 USD, the amount shown at checkout, with no additional fees applied on our side.\n\nThe difference you're seeing is most likely your card issuer's currency conversion rate combined with a foreign transaction fee, both of which are set by your bank rather than by us. I'd recommend checking your cardholder agreement for the exact fee percentage they apply to international purchases.\n\nIf you'd like, I'm happy to send you a receipt showing the exact USD amount charged for your records. Just let me know.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 8,
+    "category": "billing_dispute",
+    "split": "test",
+    "incoming_email": {
+      "from": "Nate Brooks <nate.brooks22@gmail.com>",
+      "subject": "Billed for an item I cancelled",
+      "body": "I cancelled the headlamp from my order within an hour of placing it because I found I already had one, and I got a cancellation confirmation email. But today I see a charge on my card for the full order including the headlamp. Order #NW-80012. Please refund the headlamp charge."
+    },
+    "sent_reply": "Hi Nate,\n\nThanks for the heads up, and sorry for the mix-up. I checked order #NW-80012 and can see the cancellation request for the headlamp was received and confirmed, but the charge unfortunately still went through before our system caught the cancellation — that's on us.\n\nI've refunded the cost of the headlamp to your original payment method now. You should see that credit within 3-5 business days, and the rest of your order will ship as normal.\n\nThanks for catching this and for your patience while we sorted it out.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 9,
+    "category": "bug_report",
+    "split": "train",
+    "incoming_email": {
+      "from": "Angela Voss <angela.voss.hikes@gmail.com>",
+      "subject": "Checkout keeps failing at payment step",
+      "body": "I've been trying to buy the Trailmaster 65L Backpack for the last 20 minutes and every time I get to the payment step and hit 'Place Order,' the page just spins and then throws an error that says 'Something went wrong, please try again.' I've tried two different credit cards and refreshing the page. My cart still has the item in it. Is this a known issue?"
+    },
+    "sent_reply": "Hi Angela,\n\nSorry for the trouble trying to check out for the Trailmaster 65L Backpack — that error is on us, not your cards. Our team identified a payment processing issue affecting some checkouts today and has since resolved it.\n\nCould you try placing the order again? Your cart should still have the backpack saved. If you hit the same error, please let me know and I'll go ahead and place the order manually on our end so you don't lose your spot on inventory.\n\nThanks for your patience, and sorry again for the frustration.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 10,
+    "category": "bug_report",
+    "split": "train",
+    "incoming_email": {
+      "from": "Marcus Lee <marcus.lee.dev@gmail.com>",
+      "subject": "App crashes when I add items to cart",
+      "body": "Every time I try to add more than one item to my cart in the Northwind Gear app on my iPhone, the app crashes completely and closes. I've deleted and reinstalled it twice and it still happens. I'm on iOS 18 and app version 4.2.1. It's pretty frustrating since I can't actually buy anything right now."
+    },
+    "sent_reply": "Hi Marcus,\n\nThanks for the detailed report — that's really helpful. I'm sorry for the frustration, and I can confirm our engineering team is aware of a crash affecting the cart feature on iOS 18 with app version 4.2.1, specifically when adding multiple items.\n\nA fix is being rolled out in our next app update, expected within the next few days. In the meantime, the fastest workaround is to shop and check out through our website at northwindgear.com using your phone's browser — your account and saved items will carry over once you're back in the app.\n\nI'll follow up personally once the update is live. Thanks again for flagging this with the specifics — it really helps our team pinpoint the issue.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 11,
+    "category": "bug_report",
+    "split": "train",
+    "incoming_email": {
+      "from": "Selena Ortiz <selena.ortiz@gmail.com>",
+      "subject": "Order tracking link goes to a 404 page",
+      "body": "Hi, the tracking link in my shipping confirmation email for order #NW-90345 just goes to a 'Page Not Found' error on your website. I ordered a set of trekking poles and a water bottle and just want to know where the package is. Can you help?"
+    },
+    "sent_reply": "Hi Selena,\n\nThanks for letting us know — sorry that tracking link led to a dead end. I looked up order #NW-90345 directly and can confirm your trekking poles and water bottle shipped two days ago and are currently in transit, on track for delivery within our standard 5-7 business day window.\n\nOur web team is aware of an issue with some tracking links breaking and is working on a fix. In the meantime, I've attached the correct tracking number below so you can check status directly with the carrier:\n\nTracking #: 1Z999AA10123456784\n\nLet me know if it doesn't show movement within a day or two and I'll dig in further.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 12,
+    "category": "bug_report",
+    "split": "test",
+    "incoming_email": {
+      "from": "Chris Patel <chris.patel1990@gmail.com>",
+      "subject": "Not receiving password reset email",
+      "body": "I've requested a password reset for my account three times now and never get the email, not even in spam. I've double checked I'm using the right email address (the one I use for this message). I really need to get into my account to check on an order. Please help."
+    },
+    "sent_reply": "Hi Chris,\n\nSorry for the trouble getting into your account — that's frustrating when you're trying to check on an order. I can confirm there's an account associated with this email address, so let's get this sorted.\n\nI've manually triggered a password reset email from our end just now — please check both your inbox and spam/promotions folders over the next few minutes. If it still doesn't arrive within 15 minutes, reply here and I'll reset your password directly and send you a temporary one to log in with.\n\nOnce you're back in, you'll be able to see your order status right on your account dashboard.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 13,
+    "category": "angry_escalation",
+    "split": "train",
+    "incoming_email": {
+      "from": "Jordan Baptiste <jordan.baptiste@gmail.com>",
+      "subject": "My order still hasn't arrived and I leave for my trip in 2 days",
+      "body": "I ordered the Trailblazer Camping Set (order #NW-15567) 9 days ago and paid for standard shipping expecting it within your stated 5-7 days. It's now day 9 and tracking still just says 'label created.' I leave for my camping trip in 2 days and I'm getting pretty worried this isn't going to show up in time. Can you please tell me what's going on?"
+    },
+    "sent_reply": "Hi Jordan,\n\nI completely understand the worry with your trip just two days away, and I'm sorry order #NW-15567 hasn't moved as expected — a 'label created' status with no update after this long is not the normal 5-7 day experience we aim for.\n\nI checked with our fulfillment team directly: your Trailblazer Camping Set is being expedited today via 2-day shipping at no extra cost, and you should receive tracking movement within a few hours and delivery before your trip.\n\nI'll keep an eye on this personally and follow up tomorrow to confirm it's on track. If for any reason it doesn't arrive in time, we'll make sure you're taken care of.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 14,
+    "category": "angry_escalation",
+    "split": "train",
+    "incoming_email": {
+      "from": "RICK DONOVAN <rickd_outdoors@gmail.com>",
+      "subject": "THIS IS THE SECOND TIME YOU'VE SENT ME THE WRONG BACKPACK",
+      "body": "I am absolutely done with this. Order #NW-26689 was supposed to be the Trailmaster 65L Backpack in GREEN. You sent me the wrong color the FIRST time, I sent it back like you asked, and now the REPLACEMENT you sent is ALSO the wrong color!! This is the second time I've had to repackage a box and drive to the shipping store on MY time. I have a trip in 5 days and STILL don't have the pack I ordered. I want this fixed TODAY or I want a full refund AND some kind of compensation for how much time this has wasted. This is completely unacceptable."
+    },
+    "sent_reply": "Hi Rick,\n\nI hear you, and you're right to be frustrated — getting the wrong color backpack twice on order #NW-26689, with a trip in 5 days, is not okay, and I'm sorry for the time this has cost you.\n\nHere's what I'm doing right now: I've personally pulled a Trailmaster 65L Backpack in green from our warehouse, confirmed the color on the pick ticket myself, and shipped it overnight at no cost to you — it should arrive within 1-2 business days, well before your trip. You do not need to return anything until the correct pack arrives; I've included a prepaid label in the new package for the second wrong one whenever it's convenient.\n\nI've also issued a $30 store credit to your account for the inconvenience of having to deal with this twice. If the green pack still isn't right when it lands, contact me directly and I will process a full refund immediately, no further steps required.\n\nI'm sorry again for the frustration this has caused — thank you for giving us the chance to make it right.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 15,
+    "category": "angry_escalation",
+    "split": "train",
+    "incoming_email": {
+      "from": "Yusuf Karimi <yusuf.karimi88@gmail.com>",
+      "subject": "Re: Re: Still no response about my order #NW-37711",
+      "body": "This is my third email about this. I wrote on Monday and again on Wednesday about a missing item from order #NW-37711 (the compression sack that was supposed to come with my sleeping bag) and haven't heard back either time. I don't want to have to keep chasing this down. Can someone actually respond this time?"
+    },
+    "sent_reply": "Hi Yusuf,\n\nFirst, I'm sorry — you shouldn't have had to send three emails to get a response, and I understand the frustration of feeling ignored. That's not the standard we hold ourselves to, and I want to make sure this gets fully resolved right now.\n\nI checked order #NW-37711 and confirmed the compression sack was missing from your sleeping bag shipment due to a packing error on our end. I've shipped the missing compression sack today with expedited delivery at no charge, and you should have it within 2-3 business days.\n\nI've also flagged your earlier emails internally so we can look into why they went unanswered. If anything else comes up on this order, please reply directly to this email and it will come straight to me.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 16,
+    "category": "angry_escalation",
+    "split": "test",
+    "incoming_email": {
+      "from": "Denise Falk <denise.falk77@gmail.com>",
+      "subject": "Pack fell apart after 3 months, thinking about leaving a review",
+      "body": "The zipper on my Trailmaster 65L Backpack (order #NW-48823) completely came off the track after only 3 months of use, not even heavy use, just normal hiking. For a pack that costs what this one does, that's honestly pretty disappointing and makes me question the quality of everything you sell. I was planning to write a review about this experience unless someone can actually help me. What are you going to do about this?"
+    },
+    "sent_reply": "Hi Denise,\n\nI'm sorry to hear the zipper on your Trailmaster 65L Backpack failed after just 3 months of normal use — that's not the durability we build these packs for, and I completely understand why it's shaken your confidence in the quality.\n\nGood news: all Northwind Gear packs, including yours from order #NW-48823, are covered by our 2-year warranty against exactly this kind of manufacturing defect. I've started a warranty claim on your behalf, and you have two options: we can send a free repair kit with a replacement zipper slider, or if you'd rather not deal with fixing it yourself, we'll ship you a brand new Trailmaster 65L at no cost and provide a prepaid label to return the defective one.\n\nJust reply and let me know which option you'd prefer and I'll get it moving today. I'd really appreciate the chance to turn this experience around before you write that review.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 17,
+    "category": "feature_request",
+    "split": "train",
+    "incoming_email": {
+      "from": "Hannah Osei <hannah.osei.gear@gmail.com>",
+      "subject": "Wishlist or save-for-later feature?",
+      "body": "This might already exist and I'm just missing it, but is there a way to save items to a wishlist on the website so I can come back to them later without adding them to my cart? I keep a running list of gear I want for next season and it would be so much easier than bookmarking product pages one by one."
+    },
+    "sent_reply": "Hi Hannah,\n\nGreat question, and no, you're not missing anything — we don't currently have a dedicated wishlist or save-for-later feature on the website, though I completely see the appeal for planning out next season's gear.\n\nI've passed your suggestion along to our product team as a formal feature request; requests like this from real customers carry a lot of weight when we're prioritizing what to build next.\n\nIn the meantime, one workaround is adding items to your cart and simply not checking out — carts are saved to your account for 30 days if you're logged in, which might help bridge the gap until a proper wishlist feature exists.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 18,
+    "category": "feature_request",
+    "split": "train",
+    "incoming_email": {
+      "from": "Oliver Ramsay <oliver.ramsay@gmail.com>",
+      "subject": "More detailed sizing info for backpacks?",
+      "body": "I've bought two backpacks from you now and both times I've had to guess at sizing based on just S/M/L. Would it be possible to add a more detailed size chart, or even a short fit quiz based on torso length and hip size like some other outdoor brands have? It would really cut down on returns and exchanges I'd think, for you and for customers."
+    },
+    "sent_reply": "Hi Oliver,\n\nThanks for the thoughtful suggestion, and I'm sorry the S/M/L sizing hasn't given you enough to go on for your last two orders. You're right that a more detailed size chart or fit quiz based on torso length and hip measurements would help a lot of customers dial in fit more confidently.\n\nI've logged this as a feature request with our product team, and I've specifically included your point about how it could reduce returns and exchanges, since that's exactly the kind of feedback that helps prioritize these projects.\n\nIn the meantime, if you let me know your torso length and which two packs you previously ordered, I'm happy to help you personally figure out the best size for your next purchase.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 19,
+    "category": "feature_request",
+    "split": "train",
+    "incoming_email": {
+      "from": "Grace Whitmore <grace.whitmore.gear@gmail.com>",
+      "subject": "Feature idea: filter packs by weight or liters",
+      "body": "When I'm browsing your backpacks page, I can filter by color and price but not by pack weight or capacity in liters, which are honestly the two things I care about most as an ultralight backpacker. It would save me a lot of clicking through individual product pages if I could filter or sort by those specs directly."
+    },
+    "sent_reply": "Hi Grace,\n\nThat's a great suggestion, and as an ultralight backpacker myself I really get why pack weight and liter capacity would be more useful filters than color for narrowing things down quickly.\n\nI've submitted this as a feature request to our website team, specifically calling out filtering and sorting by pack weight and capacity in liters on the backpacks category page.\n\nIn the meantime, our full backpack lineup page does list weight and liter specs in the product comparison table near the bottom if that helps speed up your browsing until filtering is available.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 20,
+    "category": "feature_request",
+    "split": "test",
+    "incoming_email": {
+      "from": "Kevin Nakamura <kevin.nakamura@gmail.com>",
+      "subject": "Any chance of a dark mode for the app?",
+      "body": "Small thing, but I use the Northwind Gear app a lot at night when I'm planning trips in bed, and the bright white screen is pretty rough on the eyes. Any plans to add a dark mode option?"
+    },
+    "sent_reply": "Hi Kevin,\n\nThanks for the suggestion — late-night trip planning deserves an easier-on-the-eyes screen, and dark mode is a really reasonable ask that comes up more than you'd think.\n\nWe don't have dark mode in the app currently, but I've added your request to the feature list our mobile team reviews. It's not on our immediate roadmap, but customer requests like yours directly influence what gets prioritized in upcoming releases.\n\nIn the meantime, lowering your phone's overall brightness or using your device's system-wide night mode / blue light filter can help take some of the edge off until a native dark mode is available.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 21,
+    "category": "howto_question",
+    "split": "train",
+    "incoming_email": {
+      "from": "Sofia Marchetti <sofia.marchetti@gmail.com>",
+      "subject": "How do I re-waterproof my rain jacket?",
+      "body": "I bought the Cascade Rain Shell jacket (order #NW-59934) about a year ago and I've noticed water isn't beading up on the surface like it used to — it seems to be soaking into the fabric instead. Is there something I should be doing to maintain the waterproofing, and is it too late to fix at this point?"
+    },
+    "sent_reply": "Hi Sofia,\n\nGreat question, and no, it's definitely not too late — what you're describing is completely normal wear on the durable water repellent (DWR) coating of the Cascade Rain Shell after about a year of use, and it's easy to restore.\n\nFirst, wash the jacket on a gentle cycle with a technical gear cleaner (avoid regular detergent, which can leave residue that blocks water repellency). Then apply a spray-on or wash-in DWR treatment made for waterproof-breathable fabrics, and tumble dry on low heat or use a warm iron on a low, no-steam setting over a cloth — the heat reactivates the coating.\n\nDoing this once or twice a season should keep your jacket beading water like new. Let me know if you'd like a specific product recommendation for the DWR treatment.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 22,
+    "category": "howto_question",
+    "split": "train",
+    "incoming_email": {
+      "from": "Ethan Cole <ethan.cole.trailhead@gmail.com>",
+      "subject": "How do I figure out my backpack size before ordering?",
+      "body": "I'm about to order my first real backpacking pack from you and I have no idea how backpack sizing works beyond shirt sizes. How do I know if I need small, medium, or large, and does it matter how tall I am versus my torso length specifically?"
+    },
+    "sent_reply": "Hi Ethan,\n\nCongrats on your first real backpacking pack — happy to walk you through sizing, and you're right that it's torso length, not overall height, that matters most.\n\nTo measure: tilt your head forward and find the bony bump at the base of your neck (that's your C7 vertebra) — that's the top measurement point. Then find the imaginary line between the top of your hip bones (iliac crest) — that's the bottom point. Measure the distance between those two points along your spine; that's your torso length.\n\nAs a general guide: under 16 inches is typically Small, 16-19 inches is Medium, and over 19 inches is Large, though it varies slightly by model, so check the specific product page for exact ranges. If you tell me your torso measurement, I'm glad to double check which size fits best for the pack you're considering.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 23,
+    "category": "howto_question",
+    "split": "train",
+    "incoming_email": {
+      "from": "Natalie Chen <natalie.chen.hikes@gmail.com>",
+      "subject": "How do I file a warranty claim for my backpack zipper?",
+      "body": "The main zipper on my Trailmaster 65L Backpack (order #NW-61045) has started separating at the seam after about a year and a half of regular use. I remember reading something about a warranty on packs — how do I actually go about filing a claim?"
+    },
+    "sent_reply": "Hi Natalie,\n\nGood news — the Trailmaster 65L is covered by our 2-year warranty against manufacturing defects, and a zipper seam separating after a year and a half of regular use falls right within that coverage.\n\nTo file the claim, just reply to this email with a couple of photos showing the separated seam and your order number, #NW-61045, which you've already given me, so we're set there. Once I confirm the defect, I'll either send a free repair or a full replacement pack, whichever you'd prefer — just let me know which one works better for you.\n\nWe'll also cover a prepaid shipping label if we need the original pack sent back for inspection or repair.\n\n— Northwind Gear Support"
+  },
+  {
+    "id": 24,
+    "category": "howto_question",
+    "split": "test",
+    "incoming_email": {
+      "from": "Miguel Torres <miguel.torres.outdoors@gmail.com>",
+      "subject": "Best way to clean and store my tent after a trip?",
+      "body": "Just got back from a muddy, rainy trip with the Alpine Vista 2-Person Tent (order #NW-72156) and want to make sure I store it properly so it doesn't get moldy or damaged before my next trip in a couple months. What's the recommended way to clean and dry it before packing it away?"
+    },
+    "sent_reply": "Hi Miguel,\n\nGlad you made it back, and great instinct asking before packing away a muddy, wet tent — that's exactly how mold and mildew problems start.\n\nFirst, set up the Alpine Vista fully (poles and all) somewhere dry and let it air dry completely, inside and out — do not pack it away even slightly damp. Once dry, brush off any dried mud or debris with a soft brush or damp cloth; avoid harsh detergents, which can strip the waterproof coating. If it needs a deeper clean, use a bit of mild, non-detergent soap and lukewarm water on the affected areas only, then rinse and dry fully again.\n\nFor storage, keep it loosely stuffed or rolled (not tightly compressed) in a breathable storage sack rather than its original stuff sack, in a cool, dry place out of direct sunlight. That will keep the fabric and waterproof coating in good shape until your next trip.\n\n— Northwind Gear Support"
+  }
+]

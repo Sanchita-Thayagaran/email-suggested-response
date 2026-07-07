@@ -18,10 +18,12 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 from statistics import mean
 
-import anthropic
+from google import genai
+from google.genai import errors, types
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -30,9 +32,12 @@ DATASET_PATH = BASE_DIR / "dataset.json"
 GENERATED_PATH = BASE_DIR / "outputs" / "generated.json"
 RESULTS_PATH = BASE_DIR / "outputs" / "results.json"
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "gemini-2.5-flash"
 MAX_TOKENS = 1024
 TEMPERATURE = 0
+
+MAX_RETRIES = 2
+RETRY_SLEEP_SECONDS = 2
 
 JUDGE_DIMENSIONS = ["relevance", "grounding", "tone", "actionability", "consistency"]
 
@@ -133,20 +138,37 @@ def parse_judge_response(text):
     return parsed
 
 
+def call_with_retries(fn, max_retries=MAX_RETRIES, sleep_seconds=RETRY_SLEEP_SECONDS):
+    """Call fn() with a couple of short-sleep retries on API/rate-limit errors."""
+    for attempt in range(max_retries + 1):
+        try:
+            return fn()
+        except errors.APIError as e:
+            if attempt < max_retries:
+                print(
+                    f"  API error ({e.code}) — retrying in {sleep_seconds}s "
+                    f"(attempt {attempt + 1}/{max_retries}) ...",
+                    file=sys.stderr,
+                )
+                time.sleep(sleep_seconds)
+            else:
+                raise
+
+
 def call_judge(client, incoming_email, retrieved_pairs, candidate_reply):
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        temperature=TEMPERATURE,
-        system=JUDGE_SYSTEM_PROMPT,
-        messages=[
-            {
-                "role": "user",
-                "content": build_judge_user_message(incoming_email, retrieved_pairs, candidate_reply),
-            }
-        ],
-    )
-    text = "\n".join(block.text for block in response.content if block.type == "text")
+    def _call():
+        response = client.models.generate_content(
+            model=MODEL,
+            contents=build_judge_user_message(incoming_email, retrieved_pairs, candidate_reply),
+            config=types.GenerateContentConfig(
+                system_instruction=JUDGE_SYSTEM_PROMPT,
+                temperature=TEMPERATURE,
+                max_output_tokens=MAX_TOKENS,
+            ),
+        )
+        return response.text
+
+    text = call_with_retries(_call)
     return parse_judge_response(text)
 
 
@@ -228,21 +250,22 @@ def evaluate_response(client, entry, id_to_pair):
     try:
         judge_scores = call_judge(client, incoming_email, retrieved_pairs, candidate_reply)
         result["judge"] = judge_scores
-    except anthropic.AuthenticationError:
+    except errors.ClientError as e:
         result["status"] = "judge_error"
-        result["judge_error"] = "authentication failed — check ANTHROPIC_API_KEY"
+        if e.code == 429:
+            result["judge_error"] = f"rate limited — {e}"
+        elif e.code in (401, 403):
+            result["judge_error"] = f"authentication failed — check GEMINI_API_KEY — {e}"
+        else:
+            result["judge_error"] = f"API client error (status {e.code}) — {e}"
         return result
-    except anthropic.RateLimitError as e:
+    except errors.ServerError as e:
         result["status"] = "judge_error"
-        result["judge_error"] = f"rate limited — {e}"
+        result["judge_error"] = f"API server error (status {e.code}) — {e}"
         return result
-    except anthropic.APIStatusError as e:
+    except errors.APIError as e:
         result["status"] = "judge_error"
-        result["judge_error"] = f"API error (status {e.status_code}) — {e.message}"
-        return result
-    except anthropic.APIConnectionError as e:
-        result["status"] = "judge_error"
-        result["judge_error"] = f"connection error — {e}"
+        result["judge_error"] = f"API error (status {e.code}) — {e}"
         return result
     except (ValueError, KeyError, json.JSONDecodeError) as e:
         result["status"] = "judge_parse_error"
@@ -340,9 +363,9 @@ def main():
         )
         sys.exit(1)
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        print("ERROR: ANTHROPIC_API_KEY environment variable is not set.", file=sys.stderr)
+        print("ERROR: GEMINI_API_KEY environment variable is not set.", file=sys.stderr)
         sys.exit(1)
 
     print(f"Loading dataset from {DATASET_PATH} ...")
@@ -353,7 +376,7 @@ def main():
     generated = load_json(GENERATED_PATH)
     print(f"Loaded {len(generated)} candidate replies to evaluate.")
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
     results = []
     for i, entry in enumerate(generated, start=1):

@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Generate suggested replies for test-split support emails using retrieval + Claude."""
+"""Generate suggested replies for test-split support emails using retrieval + Gemini."""
 
 import json
 import os
 import sys
+import time
 from pathlib import Path
 
-import anthropic
+from google import genai
+from google.genai import errors, types
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -14,9 +16,12 @@ BASE_DIR = Path(__file__).resolve().parent
 DATASET_PATH = BASE_DIR / "dataset.json"
 OUTPUT_PATH = BASE_DIR / "outputs" / "generated.json"
 
-MODEL = "claude-sonnet-4-6"
+MODEL = "gemini-2.5-flash"
 MAX_TOKENS = 1024
 TOP_K = 3
+
+MAX_RETRIES = 2
+RETRY_SLEEP_SECONDS = 2
 
 SYSTEM_PROMPT = """You are a customer support agent for Northwind Gear, an outdoor-gear e-commerce company (support@northwindgear.com).
 
@@ -88,15 +93,36 @@ def build_user_message(test_pair, examples):
     )
 
 
+def call_with_retries(fn, max_retries=MAX_RETRIES, sleep_seconds=RETRY_SLEEP_SECONDS):
+    """Call fn() with a couple of short-sleep retries on API/rate-limit errors."""
+    for attempt in range(max_retries + 1):
+        try:
+            return fn()
+        except errors.APIError as e:
+            if attempt < max_retries:
+                print(
+                    f"  API error ({e.code}) — retrying in {sleep_seconds}s "
+                    f"(attempt {attempt + 1}/{max_retries}) ...",
+                    file=sys.stderr,
+                )
+                time.sleep(sleep_seconds)
+            else:
+                raise
+
+
 def generate_reply(client, test_pair, examples):
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=MAX_TOKENS,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": build_user_message(test_pair, examples)}],
-    )
-    text_blocks = [block.text for block in response.content if block.type == "text"]
-    return "\n".join(text_blocks).strip()
+    def _call():
+        response = client.models.generate_content(
+            model=MODEL,
+            contents=build_user_message(test_pair, examples),
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_PROMPT,
+                max_output_tokens=MAX_TOKENS,
+            ),
+        )
+        return response.text.strip()
+
+    return call_with_retries(_call)
 
 
 def process_test_email(client, test_pair, vectorizer, matrix, train_pairs):
@@ -109,14 +135,17 @@ def process_test_email(client, test_pair, vectorizer, matrix, train_pairs):
     try:
         generated_reply = generate_reply(client, test_pair, examples)
         print("  Generated reply successfully.")
-    except anthropic.AuthenticationError:
-        print("  ERROR: authentication failed — check ANTHROPIC_API_KEY.", file=sys.stderr)
-    except anthropic.RateLimitError as e:
-        print(f"  ERROR: rate limited — {e}", file=sys.stderr)
-    except anthropic.APIStatusError as e:
-        print(f"  ERROR: API error (status {e.status_code}) — {e.message}", file=sys.stderr)
-    except anthropic.APIConnectionError as e:
-        print(f"  ERROR: connection error — {e}", file=sys.stderr)
+    except errors.ClientError as e:
+        if e.code == 429:
+            print(f"  ERROR: rate limited — {e}", file=sys.stderr)
+        elif e.code in (401, 403):
+            print(f"  ERROR: authentication failed — check GEMINI_API_KEY — {e}", file=sys.stderr)
+        else:
+            print(f"  ERROR: API client error (status {e.code}) — {e}", file=sys.stderr)
+    except errors.ServerError as e:
+        print(f"  ERROR: API server error (status {e.code}) — {e}", file=sys.stderr)
+    except errors.APIError as e:
+        print(f"  ERROR: API error (status {e.code}) — {e}", file=sys.stderr)
     except Exception as e:  # noqa: BLE001 - keep the batch running on unexpected errors
         print(f"  ERROR: unexpected error — {e}", file=sys.stderr)
 
@@ -131,9 +160,9 @@ def process_test_email(client, test_pair, vectorizer, matrix, train_pairs):
 
 
 def main():
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        print("ERROR: ANTHROPIC_API_KEY environment variable is not set.", file=sys.stderr)
+        print("ERROR: GEMINI_API_KEY environment variable is not set.", file=sys.stderr)
         sys.exit(1)
 
     print(f"Loading dataset from {DATASET_PATH} ...")
@@ -145,7 +174,7 @@ def main():
     print("Building TF-IDF retrieval index over train incoming emails (subject + body) ...")
     vectorizer, matrix = build_retrieval_index(train_pairs)
 
-    client = anthropic.Anthropic(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
     results = []
     for i, test_pair in enumerate(test_pairs, start=1):

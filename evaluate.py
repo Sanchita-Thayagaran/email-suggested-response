@@ -215,6 +215,11 @@ def call_judge(client, incoming_email, retrieved_pairs, candidate_reply):
                 max_output_tokens=MAX_TOKENS,
                 response_mime_type="application/json",
                 response_json_schema=JUDGE_RESPONSE_JSON_SCHEMA,
+                # Gemini 2.5 Flash thinks by default, and thinking tokens share
+                # max_output_tokens with the final answer — that was silently
+                # truncating the JSON mid-object. This task needs no reasoning
+                # budget at all, so disable it outright.
+                thinking_config=types.ThinkingConfig(thinking_budget=0),
             ),
         )
         return response.text

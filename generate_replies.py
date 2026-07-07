@@ -147,6 +147,10 @@ def generate_reply(client, test_pair, examples):
             config=types.GenerateContentConfig(
                 system_instruction=SYSTEM_PROMPT,
                 max_output_tokens=MAX_TOKENS,
+                # Disabled defensively — thinking tokens share max_output_tokens
+                # with the final answer on Gemini 2.5 Flash, which was observed
+                # truncating judge JSON in evaluate.py under the same setup.
+                thinking_config=types.ThinkingConfig(thinking_budget=0),
             ),
         )
         return response.text.strip()

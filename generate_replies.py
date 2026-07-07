@@ -20,7 +20,7 @@ MODEL = "gemini-2.5-flash"
 MAX_TOKENS = 1024
 TOP_K = 3
 
-MAX_RETRIES = 2
+MAX_RETRIES = 4
 RETRY_SLEEP_SECONDS = 2
 
 SYSTEM_PROMPT = """You are a customer support agent for Northwind Gear, an outdoor-gear e-commerce company (support@northwindgear.com).
@@ -93,19 +93,48 @@ def build_user_message(test_pair, examples):
     )
 
 
+def extract_retry_delay_seconds(e):
+    """Pull the server-suggested retry delay (e.g. "24s") out of a 429 error.
+
+    The free tier's RESOURCE_EXHAUSTED response includes a RetryInfo detail
+    telling us exactly how long to wait — a fixed short sleep isn't enough
+    for a 5-requests-per-minute quota, so we honor the real number when Gemini
+    gives us one and fall back to a fixed sleep only if it's missing/unparseable.
+    """
+    try:
+        for detail in e.details.get("error", {}).get("details", []):
+            if detail.get("@type", "").endswith("RetryInfo"):
+                delay = detail.get("retryDelay", "")
+                if delay.endswith("s"):
+                    return float(delay[:-1])
+    except (AttributeError, TypeError, ValueError):
+        pass
+    return None
+
+
 def call_with_retries(fn, max_retries=MAX_RETRIES, sleep_seconds=RETRY_SLEEP_SECONDS):
-    """Call fn() with a couple of short-sleep retries on API/rate-limit errors."""
+    """Call fn() with a few retries on API/rate-limit errors.
+
+    On 429s, sleeps for the server-reported retryDelay (plus a small buffer)
+    rather than a fixed short sleep, since the free tier's quota window can
+    take much longer than a couple of seconds to reset.
+    """
     for attempt in range(max_retries + 1):
         try:
             return fn()
         except errors.APIError as e:
             if attempt < max_retries:
+                wait = sleep_seconds
+                if e.code == 429:
+                    retry_delay = extract_retry_delay_seconds(e)
+                    if retry_delay is not None:
+                        wait = retry_delay + 1
                 print(
-                    f"  API error ({e.code}) — retrying in {sleep_seconds}s "
+                    f"  API error ({e.code}) — retrying in {wait:.0f}s "
                     f"(attempt {attempt + 1}/{max_retries}) ...",
                     file=sys.stderr,
                 )
-                time.sleep(sleep_seconds)
+                time.sleep(wait)
             else:
                 raise
 

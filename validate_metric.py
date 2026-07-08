@@ -69,7 +69,50 @@ def build_candidates(test_pairs):
     return candidates
 
 
-def score_all_candidates(client, test_pairs, id_to_pair, train_pairs):
+def load_cached_results():
+    """Load previously-completed results from VALIDATION_PATH, if any.
+
+    Only status == "ok" entries count as done — anything else (a prior
+    error) is re-attempted, since those failures are expected to be
+    transient (rate limits, momentary 5xxs) rather than permanent. This is
+    what makes the script resumable across the free tier's daily quota:
+    a run that only gets partway through still leaves usable progress.
+    """
+    if not VALIDATION_PATH.exists():
+        return {}
+    try:
+        existing = load_json(VALIDATION_PATH)
+    except (json.JSONDecodeError, OSError):
+        return {}
+    return {
+        (r["id"], r["class"]): r
+        for r in existing.get("responses", [])
+        if r.get("status") == "ok" and "class" in r
+    }
+
+
+def write_checkpoint(results):
+    """Persist current progress (and the summary computed from it) after
+    every evaluation, so a run that gets interrupted — Ctrl-C, a crash, or
+    hitting the daily quota mid-batch — never loses already-completed
+    (and already-quota-spent) judge calls. Returns the written dict."""
+    per_class_mean = summarize_by_class(results)
+    ordering_ref_gen_wrong, ordering_ref_rude, separations = check_ordering(per_class_mean)
+    validation = {
+        "per_class_mean_composite": per_class_mean,
+        "ordering_reference_gt_generic_gt_wrong_topic": ordering_ref_gen_wrong,
+        "ordering_reference_gt_rude": ordering_ref_rude,
+        "metric_validated": ordering_ref_gen_wrong and ordering_ref_rude,
+        "score_separation": separations,
+        "responses": results,
+    }
+    VALIDATION_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(VALIDATION_PATH, "w") as f:
+        json.dump(validation, f, indent=2)
+    return validation
+
+
+def score_all_candidates(client, test_pairs, id_to_pair, train_pairs, cached):
     candidates_by_id = build_candidates(test_pairs)
 
     print("Building TF-IDF retrieval index (same as generate_replies.py) ...")
@@ -88,9 +131,16 @@ def score_all_candidates(client, test_pairs, id_to_pair, train_pairs):
 
         for cls in CLASSES:
             done += 1
-            reply_text = candidates_by_id[pair["id"]][cls]
             print(f"[{done}/{total}] test id={pair['id']} category={pair['category']} class={cls} ...")
 
+            cache_key = (pair["id"], cls)
+            if cache_key in cached:
+                result = cached[cache_key]
+                print(f"  cached composite={result['composite_score']} (already scored — skipped)")
+                results.append(result)
+                continue
+
+            reply_text = candidates_by_id[pair["id"]][cls]
             entry = {
                 "id": pair["id"],
                 "category": pair["category"],
@@ -107,6 +157,7 @@ def score_all_candidates(client, test_pairs, id_to_pair, train_pairs):
                 print(f"  {result.get('status')}: {result.get('judge_error')}")
 
             results.append(result)
+            write_checkpoint(results)  # never lose an already-spent quota call
 
     return results
 
@@ -183,31 +234,32 @@ def main():
     id_to_pair = {d["id"]: d for d in dataset}
     train_pairs = [d for d in dataset if d["split"] == "train"]
     test_pairs = [d for d in dataset if d["split"] == "test"]
+    total = len(test_pairs) * len(CLASSES)
     print(f"{len(train_pairs)} train pairs, {len(test_pairs)} test emails — "
-          f"{len(test_pairs) * len(CLASSES)} total (email, candidate class) pairs to score.")
+          f"{total} total (email, candidate class) pairs to score.")
+
+    cached = load_cached_results()
+    if cached:
+        print(f"Resuming from {VALIDATION_PATH}: {len(cached)}/{total} pairs already "
+              f"scored in a previous run — those will be skipped.")
 
     client = genai.Client(api_key=api_key)
 
-    results = score_all_candidates(client, test_pairs, id_to_pair, train_pairs)
-    per_class_mean = summarize_by_class(results)
-    ordering_ref_gen_wrong, ordering_ref_rude, separations = check_ordering(per_class_mean)
-    metric_validated = ordering_ref_gen_wrong and ordering_ref_rude
+    results = score_all_candidates(client, test_pairs, id_to_pair, train_pairs, cached)
+    validation = write_checkpoint(results)
 
-    validation = {
-        "per_class_mean_composite": per_class_mean,
-        "ordering_reference_gt_generic_gt_wrong_topic": ordering_ref_gen_wrong,
-        "ordering_reference_gt_rude": ordering_ref_rude,
-        "metric_validated": metric_validated,
-        "score_separation": separations,
-        "responses": results,
-    }
+    print_report(
+        validation["per_class_mean_composite"],
+        validation["ordering_reference_gt_generic_gt_wrong_topic"],
+        validation["ordering_reference_gt_rude"],
+        validation["score_separation"],
+    )
 
-    VALIDATION_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with open(VALIDATION_PATH, "w") as f:
-        json.dump(validation, f, indent=2)
-
-    print_report(per_class_mean, ordering_ref_gen_wrong, ordering_ref_rude, separations)
-    print(f"\nSaved full breakdown to {VALIDATION_PATH}")
+    remaining = total - sum(1 for r in results if r.get("status") == "ok")
+    if remaining > 0:
+        print(f"\n{remaining}/{total} pairs still unscored (quota or errors) — "
+              f"re-run this same command later to resume from here.")
+    print(f"Saved full breakdown to {VALIDATION_PATH}")
 
 
 if __name__ == "__main__":

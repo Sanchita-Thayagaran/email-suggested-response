@@ -28,6 +28,12 @@ from generate_replies import build_retrieval_index, retrieve_top_k
 BASE_DIR = Path(__file__).resolve().parent
 VALIDATION_PATH = BASE_DIR / "outputs" / "validation.json"
 
+# This script needs 24 judge calls (6 test emails x 4 classes) in one run,
+# which exceeds gemini-2.5-flash's free-tier daily cap (20 req/day). The
+# lite tier has a materially higher free daily cap, so judge calls here use
+# it explicitly rather than evaluate.py's default MODEL.
+JUDGE_MODEL = "gemini-2.5-flash-lite"
+
 GENERIC_REPLY = "Thanks for reaching out. We'll look into this and get back to you. — Northwind Gear Support"
 RUDE_REPLY = "We already told you the answer. Read the FAQ next time. — Northwind Gear Support"
 
@@ -92,7 +98,7 @@ def score_all_candidates(client, test_pairs, id_to_pair, train_pairs):
                 "generated_reply": reply_text,
                 "retrieved_example_ids": retrieved_ids,
             }
-            result = evaluate_response(client, entry, id_to_pair)
+            result = evaluate_response(client, entry, id_to_pair, model=JUDGE_MODEL)
             result["class"] = cls
 
             if result.get("status") == "ok":

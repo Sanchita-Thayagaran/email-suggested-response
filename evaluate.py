@@ -204,10 +204,10 @@ def call_with_retries(fn, max_retries=MAX_RETRIES, sleep_seconds=RETRY_SLEEP_SEC
                 raise
 
 
-def call_judge(client, incoming_email, retrieved_pairs, candidate_reply):
+def call_judge(client, incoming_email, retrieved_pairs, candidate_reply, model=MODEL):
     def _call():
         response = client.models.generate_content(
-            model=MODEL,
+            model=model,
             contents=build_judge_user_message(incoming_email, retrieved_pairs, candidate_reply),
             config=types.GenerateContentConfig(
                 system_instruction=JUDGE_SYSTEM_PROMPT,
@@ -278,7 +278,7 @@ def compute_composite(judge_scores, deterministic_pass_rate, reference_similarit
     return round(composite, 2), round(judge_mean_1to5, 3)
 
 
-def evaluate_response(client, entry, id_to_pair):
+def evaluate_response(client, entry, id_to_pair, model=MODEL):
     incoming_email = entry["incoming_email"]
     candidate_reply = entry["generated_reply"]
 
@@ -304,7 +304,7 @@ def evaluate_response(client, entry, id_to_pair):
     result["reference_similarity"] = round(reference_similarity, 4)
 
     try:
-        judge_scores = call_judge(client, incoming_email, retrieved_pairs, candidate_reply)
+        judge_scores = call_judge(client, incoming_email, retrieved_pairs, candidate_reply, model=model)
         result["judge"] = judge_scores
     except errors.ClientError as e:
         result["status"] = "judge_error"
